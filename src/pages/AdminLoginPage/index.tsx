@@ -16,15 +16,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import secureLocalStorage from "react-secure-storage";
+import { SESSION_KEY } from "@/lib/utils";
 
 // Mengimpor schema validasi login dan tipe data LoginValues
-import { loginSchema, type LoginValues } from "@/services/auth/auth.service";
+import {
+  login,
+  loginSchema,
+  type LoginValues,
+} from "@/services/auth/auth.service";
 
 // Mengimpor resolver untuk menghubungkan Zod ke React Hook Form
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 // Mengimpor useForm dari React Hook Form untuk mengatur kontrol form
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminLoginPage() {
   // Inisialisasi form dengan useForm
@@ -38,10 +46,28 @@ export default function AdminLoginPage() {
     },
   });
 
+  // useMutation Hook dari TanStack React Query untuk operasi POST/PUT/DELETE.
+  // data: LoginValues	Objek yang dikirim dari form: { email, password, role }.
+  // mutationFn	Fungsi async yang dipanggil saat login, yaitu login(data).
+  // mutationFn: login(data) Fungsi yang dikirim ke API server
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (data: LoginValues) => login(data),
+  });
+
   // Fungsi yang dijalankan saat form disubmit
   // val bertipe LoginValues (email, password, role)
+  const navigate = useNavigate();
+
   const onSubmit = async (val: LoginValues) => {
-    console.log(val);
+    try {
+      const response = await mutateAsync(val); // Dipanggil saat user klik tombol login
+
+      secureLocalStorage.setItem(SESSION_KEY, response.data);
+
+      navigate("/admin");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Mengembalikan UI halaman login
@@ -103,7 +129,11 @@ export default function AdminLoginPage() {
                   />
                 </div>
                 <div className="flex flex-col gap-3">
-                  <Button type="submit" className="w-full">
+                  <Button
+                    isLoading={isPending}
+                    type="submit"
+                    className="w-full"
+                  >
                     Login
                   </Button>
                 </div>
