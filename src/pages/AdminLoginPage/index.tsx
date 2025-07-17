@@ -48,10 +48,12 @@ export default function AdminLoginPage() {
 
   // useMutation Hook dari TanStack React Query untuk operasi POST/PUT/DELETE.
   // data: LoginValues	Objek yang dikirim dari form: { email, password, role }.
-  // mutationFn	Fungsi async yang dipanggil saat login, yaitu login(data).
+  // mutationFn	Property konfigurasi React Query
   // mutationFn: login(data) Fungsi yang dikirim ke API server
+  // (data) => login(data) : Callback function yang menerima data dari mutateAsync(data)
+  // data	Adalah nilai (val) yang kamu kirim saat submit form
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: (data: LoginValues) => login(data),
+    mutationFn: (data: LoginValues) => login(data), // << data === val
   });
 
   // Fungsi yang dijalankan saat form disubmit
@@ -59,8 +61,9 @@ export default function AdminLoginPage() {
   const navigate = useNavigate();
 
   const onSubmit = async (val: LoginValues) => {
+    // val = isi form yang sudah divalidasi oleh zod
     try {
-      const response = await mutateAsync(val); // Dipanggil saat user klik tombol login
+      const response = await mutateAsync(val); // << KAMU yang passing "val" ke mutateAsync
 
       secureLocalStorage.setItem(SESSION_KEY, response.data);
 
