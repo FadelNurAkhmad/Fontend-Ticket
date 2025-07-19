@@ -1,7 +1,8 @@
-import type { RouteObject } from "react-router-dom"; // Mengimpor tipe untuk mendefinisikan rute dari react-router-dom
+import { redirect, type RouteObject } from "react-router-dom"; // Mengimpor tipe untuk mendefinisikan rute dari react-router-dom
 import AdminLoginPage from "../pages/AdminLoginPage"; // Mengimpor komponen halaman login admin
 import AdminOverview from "@/pages/AdminOverview";
 import AdminLayout from "@/components/AdminLayout";
+import { getSession } from "@/lib/utils";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -17,6 +18,15 @@ const adminRoutes: RouteObject[] = [
     // Rute untuk halaman utama admin (sementara hanya teks)
     path: "/admin",
     element: <AdminLayout />,
+    loader: () => {
+      const user = getSession();
+
+      if (!user || user?.role !== "admin") {
+        throw redirect("/admin/login");
+      }
+
+      return user;
+    },
     children: [
       {
         index: true,

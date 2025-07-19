@@ -2,7 +2,7 @@ import Sidebar from "./sidebar";
 import Header from "./header";
 import { Outlet } from "react-router-dom";
 
-import "../shadcn.css";
+// import "../shadcn.css";
 
 export default function AdminLayout() {
   return (
