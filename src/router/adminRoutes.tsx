@@ -3,6 +3,8 @@ import AdminLoginPage from "../pages/AdminLoginPage"; // Mengimpor komponen hala
 import AdminOverview from "@/pages/AdminOverview";
 import AdminLayout from "@/components/AdminLayout";
 import { getSession } from "@/lib/utils";
+import AdminGenre from "@/pages/AdminGenre";
+import { getGenres } from "@/services/genre/genre.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -34,7 +36,13 @@ const adminRoutes: RouteObject[] = [
       },
       {
         path: "/admin/genres",
-        element: "Admin Genre",
+        loader: async () => {
+          // ✅ Saat route ini diakses, jalankan loader
+          const genres = await getGenres(); // ambil data genre dari API
+
+          return genres.data; // hanya kembalikan array genre-nya (bukan metadata response)
+        },
+        element: <AdminGenre />,
       },
     ],
   },
