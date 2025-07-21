@@ -4,7 +4,8 @@ import AdminOverview from "@/pages/AdminOverview";
 import AdminLayout from "@/components/AdminLayout";
 import { getSession } from "@/lib/utils";
 import AdminGenre from "@/pages/AdminGenre";
-import { getGenres } from "@/services/genre/genre.service";
+import { getDetailGenre, getGenres } from "@/services/genre/genre.service";
+import AdminGenreForm from "@/pages/AdminGenre/form";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -43,6 +44,23 @@ const adminRoutes: RouteObject[] = [
           return genres.data; // hanya kembalikan array genre-nya (bukan metadata response)
         },
         element: <AdminGenre />,
+      },
+      {
+        path: "/admin/genres/create",
+        element: <AdminGenreForm />,
+      },
+      {
+        path: "/admin/genres/edit/:id",
+        loader: async ({ params }) => {
+          if (!params.id) {
+            throw redirect("/admin/genres");
+          }
+
+          const detail = await getDetailGenre(params.id);
+
+          return detail.data;
+        },
+        element: <AdminGenreForm />,
       },
     ],
   },

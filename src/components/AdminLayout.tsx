@@ -1,6 +1,7 @@
 import Sidebar from "./sidebar";
 import Header from "./header";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "./ui/sonner";
 
 // import "../shadcn.css";
 
@@ -14,6 +15,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
       </div>
+      <Toaster />
     </div>
   );
 }
