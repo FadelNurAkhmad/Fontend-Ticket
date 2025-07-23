@@ -6,6 +6,8 @@ import { getSession } from "@/lib/utils";
 import AdminGenre from "@/pages/AdminGenre";
 import { getDetailGenre, getGenres } from "@/services/genre/genre.service";
 import AdminGenreForm from "@/pages/AdminGenre/form";
+import AdminTheater from "@/pages/AdminTheater";
+import { getTheaters } from "@/services/theater/theater.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -61,6 +63,15 @@ const adminRoutes: RouteObject[] = [
           return detail.data;
         },
         element: <AdminGenreForm />,
+      },
+      {
+        path: "/admin/theaters",
+        loader: async () => {
+          const theaters = await getTheaters();
+
+          return theaters.data;
+        },
+        element: <AdminTheater />,
       },
     ],
   },

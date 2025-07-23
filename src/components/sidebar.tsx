@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bell, Home, Package, Package2 } from "lucide-react";
+import { Bell, Home, Package, Package2, Theater } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -33,6 +33,14 @@ export default function Sidebar() {
             >
               <Package className="h-4 w-4" />
               Genre{" "}
+            </Link>
+
+            <Link
+              to="/admin/theaters"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            >
+              <Theater className="h-4 w-4" />
+              Theaters{" "}
             </Link>
           </nav>
         </div>
