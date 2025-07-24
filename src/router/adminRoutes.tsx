@@ -7,7 +7,11 @@ import AdminGenre from "@/pages/AdminGenre";
 import { getDetailGenre, getGenres } from "@/services/genre/genre.service";
 import AdminGenreForm from "@/pages/AdminGenre/form";
 import AdminTheater from "@/pages/AdminTheater";
-import { getTheaters } from "@/services/theater/theater.service";
+import {
+  getDetailTheater,
+  getTheaters,
+} from "@/services/theater/theater.service";
+import AdminTheaterForm from "@/pages/AdminTheater/form";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -72,6 +76,23 @@ const adminRoutes: RouteObject[] = [
           return theaters.data;
         },
         element: <AdminTheater />,
+      },
+      {
+        path: "/admin/theaters/create",
+        element: <AdminTheaterForm />,
+      },
+      {
+        path: "/admin/theaters/edit/:id",
+        loader: async ({ params }) => {
+          if (!params.id) {
+            throw redirect("/admin/theaters");
+          }
+
+          const detail = await getDetailTheater(params.id);
+
+          return detail.data;
+        },
+        element: <AdminTheaterForm />,
       },
     ],
   },

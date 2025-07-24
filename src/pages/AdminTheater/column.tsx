@@ -1,8 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import type { Theater } from "@/services/theater/theater.type";
 import type { ColumnDef } from "@tanstack/react-table";
-// import ActionColumn from "./ActionColumn";
-// import ActionColumn from "./ActionColumn";
+import ActionColumn from "./ActionColumn";
 
 export const columns: ColumnDef<Theater>[] = [
   {
@@ -19,7 +18,7 @@ export const columns: ColumnDef<Theater>[] = [
     cell: ({ row }) => {
       const theater = row.original;
 
-      return <div>action column</div>;
+      return <ActionColumn id={theater._id} />;
     },
   },
 ];

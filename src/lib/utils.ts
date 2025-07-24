@@ -5,6 +5,13 @@ import { twMerge } from "tailwind-merge";
 
 // Menentukan key tetap untuk penyimpanan session user
 export const SESSION_KEY = "SESSION_KEY";
+// Array berisi daftar lokasi kota untuk dropdown pilihan
+export const LOCATION_OPTIONS = [
+  "Jakarta",
+  "Bandung",
+  "Semarang",
+  "Yogyakarta",
+];
 
 // Fungsi utilitas cn untuk menggabungkan class Tailwind CSS secara dinamis dan rapi
 // Digunakan ketika ingin menggabungkan beberapa className dalam komponen React
