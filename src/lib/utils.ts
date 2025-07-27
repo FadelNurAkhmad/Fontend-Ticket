@@ -33,3 +33,21 @@ export function getSession() {
   // Jika ada session, kembalikan data yang dibutuhkan dalam bentuk object
   return session;
 }
+
+export function rupiahFormat(val: number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency", // Menentukan gaya format sebagai 'currency' (mata uang)
+    currency: "IDR", // Menentukan mata uang yang digunakan adalah Rupiah (IDR)
+    // Jumlah digit desimal minimum = 0
+    // Artinya, tidak akan ada angka di belakang koma jika tidak diperlukan
+    minimumFractionDigits: 0,
+    // Jumlah digit desimal maksimum = 0
+    // Artinya, hasil akhir akan dibulatkan tanpa desimal
+    maximumFractionDigits: 0,
+  }).format(val); // Memformat nilai numerik menjadi string berformat Rupiah
+}
+
+// Intl.NumberFormat: adalah API bawaan JavaScript untuk memformat angka berdasarkan locale atau wilayah tertentu.
+// "id-ID": kode locale untuk Indonesia.
+// "currency" + "IDR": memberitahu bahwa angka harus diformat sebagai mata uang Indonesia (Rupiah).
+// format(val): fungsi akhir yang akan mengubah angka menjadi string sesuai pengaturan di atas

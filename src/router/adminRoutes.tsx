@@ -12,6 +12,9 @@ import {
   getTheaters,
 } from "@/services/theater/theater.service";
 import AdminTheaterForm from "@/pages/AdminTheater/form";
+import AdminMovie from "@/pages/AdminMovie";
+import { getMovies } from "@/services/movie/movie.service";
+// import { getMovies } from "@/services/movie/movie.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
 // adminRoutes adalah sebuah array (daftar) dari rute, dan
@@ -93,6 +96,15 @@ const adminRoutes: RouteObject[] = [
           return detail.data;
         },
         element: <AdminTheaterForm />,
+      },
+      {
+        path: "/admin/movies",
+        loader: async () => {
+          const movies = await getMovies();
+
+          return movies.data;
+        },
+        element: <AdminMovie />,
       },
     ],
   },
