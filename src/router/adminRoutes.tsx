@@ -13,7 +13,8 @@ import {
 } from "@/services/theater/theater.service";
 import AdminTheaterForm from "@/pages/AdminTheater/form";
 import AdminMovie from "@/pages/AdminMovie";
-import { getMovies } from "@/services/movie/movie.service";
+import { getDetailMovie, getMovies } from "@/services/movie/movie.service";
+import AdminMovieForm from "@/pages/AdminMovie/form";
 // import { getMovies } from "@/services/movie/movie.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
@@ -105,6 +106,42 @@ const adminRoutes: RouteObject[] = [
           return movies.data;
         },
         element: <AdminMovie />,
+      },
+      {
+        path: "/admin/movies/create",
+        // loader : Mengambil genres & theaters dari API
+        // Ini adalah fungsi khusus yang disediakan oleh React Router v6.4+ (dengan data routers).
+        // Fungsi ini akan dijalankan sebelum komponen dirender.
+        loader: async () => {
+          const genres = await getGenres();
+          const theaters = await getTheaters();
+
+          return {
+            genres: genres.data, // daftar genre untuk pilihan
+            theaters: theaters.data, // daftar theater untuk pilihan
+            detail: null, // tidak ada data film karena ini form "create"
+          };
+        },
+        element: <AdminMovieForm />,
+      },
+      {
+        path: "/admin/movies/edit/:id",
+        loader: async ({ params }) => {
+          if (!params.id) {
+            throw redirect("/admin/movies");
+          }
+
+          const genres = await getGenres();
+          const theaters = await getTheaters();
+          const detail = await getDetailMovie(params.id);
+
+          return {
+            genres: genres.data,
+            theaters: theaters.data,
+            detail: detail.data,
+          };
+        },
+        element: <AdminMovieForm />,
       },
     ],
   },

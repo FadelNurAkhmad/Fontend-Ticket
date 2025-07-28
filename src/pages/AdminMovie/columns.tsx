@@ -5,6 +5,7 @@ import type { Movie } from "@/services/movie/movie.type";
 // Mengimpor ColumnDef dari React Table (@tanstack/react-table)
 // ColumnDef adalah tipe untuk mendefinisikan struktur kolom dalam tabel
 import type { ColumnDef } from "@tanstack/react-table";
+import ActionColumn from "./ActionColumn";
 // import ActionColumn from "./ActionColumn";
 
 export const columns: ColumnDef<Movie>[] = [
@@ -86,7 +87,7 @@ export const columns: ColumnDef<Movie>[] = [
     cell: ({ row }) => {
       const movie = row.original;
 
-      return <div>Action</div>;
+      return <ActionColumn id={movie._id} />;
     },
   },
 ];
