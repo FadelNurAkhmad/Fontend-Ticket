@@ -15,6 +15,8 @@ import AdminTheaterForm from "@/pages/AdminTheater/form";
 import AdminMovie from "@/pages/AdminMovie";
 import { getDetailMovie, getMovies } from "@/services/movie/movie.service";
 import AdminMovieForm from "@/pages/AdminMovie/form";
+import { getCustomers } from "@/services/customer/customer.service";
+import AdminCustomer from "@/pages/AdminCustomer";
 // import { getMovies } from "@/services/movie/movie.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
@@ -142,6 +144,15 @@ const adminRoutes: RouteObject[] = [
           };
         },
         element: <AdminMovieForm />,
+      },
+      {
+        path: "/admin/customers",
+        loader: async () => {
+          const customers = await getCustomers();
+
+          return customers.data;
+        },
+        element: <AdminCustomer />,
       },
     ],
   },

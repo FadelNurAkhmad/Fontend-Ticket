@@ -81,6 +81,7 @@ export const columns: ColumnDef<Movie>[] = [
     },
   },
   {
+    header: "Aksi",
     // Kolom custom tanpa accessorKey
     id: "actions", // ID custom untuk kolom (biasanya untuk tombol edit/delete)
     // Kolom ini bisa digunakan untuk komponen ActionColumn (misalnya edit/hapus)

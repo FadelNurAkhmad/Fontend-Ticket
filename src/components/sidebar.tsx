@@ -6,6 +6,7 @@ import {
   Package,
   Package2,
   Theater,
+  User,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -55,6 +56,13 @@ export default function Sidebar() {
             >
               <Clapperboard className="h-4 w-4" />
               Movies{" "}
+            </Link>
+            <Link
+              to="/admin/customers"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            >
+              <User className="h-4 w-4" />
+              Customers{" "}
             </Link>
           </nav>
         </div>
