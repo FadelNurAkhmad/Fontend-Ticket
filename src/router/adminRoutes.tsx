@@ -15,8 +15,12 @@ import AdminTheaterForm from "@/pages/AdminTheater/form";
 import AdminMovie from "@/pages/AdminMovie";
 import { getDetailMovie, getMovies } from "@/services/movie/movie.service";
 import AdminMovieForm from "@/pages/AdminMovie/form";
-import { getCustomers } from "@/services/customer/customer.service";
+import {
+  getCustomers,
+  getTransactions,
+} from "@/services/customer/customer.service";
 import AdminCustomer from "@/pages/AdminCustomer";
+import AdminTransactions from "@/pages/AdminTransaction";
 // import { getMovies } from "@/services/movie/movie.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
@@ -153,6 +157,15 @@ const adminRoutes: RouteObject[] = [
           return customers.data;
         },
         element: <AdminCustomer />,
+      },
+      {
+        path: "/admin/transactions",
+        loader: async () => {
+          const transactions = await getTransactions();
+
+          return transactions.data;
+        },
+        element: <AdminTransactions />,
       },
     ],
   },

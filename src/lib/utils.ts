@@ -2,6 +2,7 @@ import type { LoginResponse } from "@/services/auth/auth.type";
 import { clsx, type ClassValue } from "clsx";
 import secureLocalStorage from "react-secure-storage";
 import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 
 // Menentukan key tetap untuk penyimpanan session user
 export const SESSION_KEY = "SESSION_KEY";
@@ -51,3 +52,7 @@ export function rupiahFormat(val: number) {
 // "id-ID": kode locale untuk Indonesia.
 // "currency" + "IDR": memberitahu bahwa angka harus diformat sebagai mata uang Indonesia (Rupiah).
 // format(val): fungsi akhir yang akan mengubah angka menjadi string sesuai pengaturan di atas
+
+export function dateFormat(val: Date | string, format = "DD-MMM-YYYY HH:mm") {
+  return dayjs(val).format(format);
+}
