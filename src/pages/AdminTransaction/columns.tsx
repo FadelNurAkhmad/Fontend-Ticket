@@ -52,6 +52,9 @@ export const columns: ColumnDef<Transaction>[] = [
   },
 ];
 
+// accessorKey: "createdAt"
+// Artinya: ambil nilai dari properti createdAt di setiap item Transaction.
+
 // transactions sekarang berisi array objek Transaction, misalnya:
 // [
 //   {
@@ -68,3 +71,14 @@ export const columns: ColumnDef<Transaction>[] = [
 //   },
 //   ...
 // ]
+
+// | Langkah | Proses                                                     | Keterangan                              |
+// | ------- | ---------------------------------------------------------- | --------------------------------------- |
+// | 1️⃣     | Akses halaman `/admin/transactions`                        | URL route dipicu                        |
+// | 2️⃣     | Loader dijalankan                                          | `getTransactions()` dipanggil           |
+// | 3️⃣     | Fetch ke API backend                                       | `GET /admin/ticket-transactions`        |
+// | 4️⃣     | Loader mengembalikan `transactions.data`                   | Array `Transaction[]`                   |
+// | 5️⃣     | Data diterima di `AdminTransactions` via `useLoaderData()` | Disimpan di variabel `transactions`     |
+// | 6️⃣     | Data dikirim ke `<DataTable />`                            | Props: `data`, `columns`                |
+// | 7️⃣     | Kolom menggunakan `row.original`                           | Mengakses dan menampilkan isi transaksi |
+// | 8️⃣     | Format tampilan (rupiah, tanggal, dll)                     | Diformat sebelum ditampilkan            |

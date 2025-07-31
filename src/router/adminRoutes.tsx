@@ -18,9 +18,11 @@ import AdminMovieForm from "@/pages/AdminMovie/form";
 import {
   getCustomers,
   getTransactions,
+  getWalletTransactions,
 } from "@/services/customer/customer.service";
 import AdminCustomer from "@/pages/AdminCustomer";
 import AdminTransactions from "@/pages/AdminTransaction";
+import AdminWalletTransactions from "@/pages/AdminWalletTransaction";
 // import { getMovies } from "@/services/movie/movie.service";
 
 // Mendefinisikan daftar rute yang berkaitan dengan admin
@@ -166,6 +168,15 @@ const adminRoutes: RouteObject[] = [
           return transactions.data;
         },
         element: <AdminTransactions />,
+      },
+      {
+        path: "/admin/wallet-transactions",
+        loader: async () => {
+          const transactions = await getWalletTransactions();
+
+          return transactions.data;
+        },
+        element: <AdminWalletTransactions />,
       },
     ],
   },

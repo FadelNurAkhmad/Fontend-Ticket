@@ -8,6 +8,7 @@ import {
   Package2,
   Theater,
   User,
+  Wallet,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,13 @@ export default function Sidebar() {
             >
               <DollarSign className="h-4 w-4" />
               Transactions{" "}
+            </Link>
+            <Link
+              to="/admin/wallet-transactions"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            >
+              <Wallet className="h-4 w-4" />
+              Wallet Transactions{" "}
             </Link>
           </nav>
         </div>
