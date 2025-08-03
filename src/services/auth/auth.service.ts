@@ -10,11 +10,20 @@ export const authSchema = z.object({
   role: z.enum(["admin", "customer"]), // role harus salah satu dari: admin atau customer
 });
 
+// 👉 hapus field "role" dari authSchema
+export const signUpSchema = authSchema.omit({ role: true }).extend({
+  photo: z.any().refine(
+    (file: File) => file?.name, // mengembalikan true jika file.name ada, artinya file valid sudah dipilih
+    { message: "Photo is required" }
+  ),
+});
+
 // schema login dari authSchema, tapi menghilangkan name.
 export const loginSchema = authSchema.omit({ name: true });
 
 // type → lebih fleksibel, cocok untuk union/intersection atau kombinasi kompleks
 export type LoginValues = z.infer<typeof loginSchema>; //  Mengubah schema Zod jadi TypeScript type otomatis.
+export type RegisterValues = z.infer<typeof signUpSchema>;
 
 // Fungsi login untuk mengirim data ke endpoint /auth/login
 export const login = async (
@@ -23,3 +32,6 @@ export const login = async (
   globalInstance
     .post("/auth/login", data) // Kirim POST request ke /auth/login dengan body `data`
     .then((res) => res.data); // Ambil hanya response data-nya (tanpa headers, status, dll)
+
+export const signUp = async (data: FormData) =>
+  globalInstance.post("/auth/register", data).then((res) => res.data);
