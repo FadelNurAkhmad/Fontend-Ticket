@@ -1,4 +1,5 @@
 import type { Genre } from "../genre/genre.type";
+import type { Theater } from "../theater/theater.type";
 
 export interface Movie {
   _id: string;
@@ -7,4 +8,13 @@ export interface Movie {
   thumbnail: string;
   thumbnailUrl: string;
   id: string;
+}
+
+type MovieTheater = Movie & {
+  theaters: Pick<Theater, "_id" | "city">[];
+};
+
+export interface MovieExplore {
+  filteredMovies: Movie[];
+  allMovies: MovieTheater[];
 }
