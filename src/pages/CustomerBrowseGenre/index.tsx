@@ -5,9 +5,30 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
+import { Link, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getMovieByGenre } from "@/services/global/global.service";
 
 export default function CustomerBrowseGenre() {
   const [show, setShowFilter] = useState<boolean>(false);
+
+  const { genreId } = useParams();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["browse-movies", genreId],
+    queryFn: () => getMovieByGenre(genreId ?? ""),
+  });
+
+  if (isLoading) {
+    return (
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        Loading...
+      </div>
+    );
+  }
+
+  console.log(data);
+
   return (
     <div
       id="Content-Container"
@@ -58,311 +79,83 @@ export default function CustomerBrowseGenre() {
             slidesOffsetAfter={20}
             className="swiper-wrapper"
           >
-            <SwiperSlide className="swiper-slide !w-fit">
-              <a href="details.html" className="card">
-                <div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/th5.png"
-                    className="w-full h-full object-cover"
-                    alt="thumbnail"
-                  />
-                  <div className="absolute w-full bottom-0 p-[14px] z-10">
-                    <div className="flex items-center w-full rounded-[20px] p-[14px] gap-3 bg-[#FFFFFF33] backdrop-blur-md verflow-hidden">
-                      <img
-                        src="/assets/images/icons/video-vertical-white.svg"
-                        className="w-8 h-8 flex shrink-0"
-                        alt="icon"
-                      />
-                      <div className="flex flex-col gap-[2px]">
-                        <p className="text-sm">Business</p>
-                        <h3 className="font-semibold">Metaverse World</h3>
+            {data?.data.filteredMovies.map((item) => (
+              <SwiperSlide key={item._id} className="swiper-slide !w-fit">
+                <Link to={`/movie/${item._id}`} className="card">
+                  <div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
+                    <img
+                      src={item.thumbnailUrl}
+                      className="w-full h-full object-cover"
+                      alt="thumbnail"
+                    />
+                    <div className="absolute w-full bottom-0 p-[14px] z-10">
+                      <div className="flex items-center w-full rounded-[20px] p-[14px] gap-3 bg-[#FFFFFF33] backdrop-blur-md verflow-hidden">
+                        <img
+                          src="/assets/images/icons/video-vertical-white.svg"
+                          className="w-8 h-8 flex shrink-0"
+                          alt="icon"
+                        />
+                        <div className="flex flex-col gap-[2px]">
+                          <p className="text-sm">{item.genre.name}</p>
+                          <h3 className="font-semibold">{item.title}</h3>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide !w-fit">
-              <a href="details.html" className="card">
-                <div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/th1.png"
-                    className="w-full h-full object-cover"
-                    alt="thumbnail"
-                  />
-                  <div className="absolute w-full bottom-0 p-[14px] z-10">
-                    <div className="flex items-center w-full rounded-[20px] p-[14px] gap-3 bg-[#FFFFFF33] backdrop-blur-md verflow-hidden">
-                      <img
-                        src="/assets/images/icons/video-vertical-white.svg"
-                        className="w-8 h-8 flex shrink-0"
-                        alt="icon"
-                      />
-                      <div className="flex flex-col gap-[2px]">
-                        <p className="text-sm">Business</p>
-                        <h3 className="font-semibold">Metaverse World</h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide !w-fit">
-              <a href="details.html" className="card">
-                <div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/th2.png"
-                    className="w-full h-full object-cover"
-                    alt="thumbnail"
-                  />
-                  <div className="absolute w-full bottom-0 p-[14px] z-10">
-                    <div className="flex items-center w-full rounded-[20px] p-[14px] gap-3 bg-[#FFFFFF33] backdrop-blur-md verflow-hidden">
-                      <img
-                        src="/assets/images/icons/video-vertical-white.svg"
-                        className="w-8 h-8 flex shrink-0"
-                        alt="icon"
-                      />
-                      <div className="flex flex-col gap-[2px]">
-                        <p className="text-sm">Business</p>
-                        <h3 className="font-semibold">Metaverse World</h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide !w-fit">
-              <a href="details.html" className="card">
-                <div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/th3.png"
-                    className="w-full h-full object-cover"
-                    alt="thumbnail"
-                  />
-                  <div className="absolute w-full bottom-0 p-[14px] z-10">
-                    <div className="flex items-center w-full rounded-[20px] p-[14px] gap-3 bg-[#FFFFFF33] backdrop-blur-md verflow-hidden">
-                      <img
-                        src="/assets/images/icons/video-vertical-white.svg"
-                        className="w-8 h-8 flex shrink-0"
-                        alt="icon"
-                      />
-                      <div className="flex flex-col gap-[2px]">
-                        <p className="text-sm">Business</p>
-                        <h3 className="font-semibold">Metaverse World</h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </SwiperSlide>
+                </Link>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </section>
       <section id="New-Movies" className="flex flex-col gap-4 mt-5 px-5">
         <h2 className="font-semibold">All New Movies</h2>
-        <a href="details.html" className="card">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-[14px]">
-              <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
+        {data?.data.allMovies.map((item) => (
+          <Link to={`/movie/${item._id}`} key={item._id} className="card">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-[14px]">
+                <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
+                  <img
+                    src={item.thumbnailUrl}
+                    className="w-full h-full object-cover"
+                    alt="thumbnail"
+                  />
+                </div>
+                <div className="flex flex-col gap-[6px]">
+                  <h3 className="font-semibold line-clamp-2">{item.title}</h3>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/assets/images/icons/video-vertical-grey.svg"
+                      className="w-[18px] h-[18px] flex shrink-0"
+                      alt="icon"
+                    />
+                    <p className="text-sm text-premiere-grey">
+                      {item.genre.name}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/assets/images/icons/location.svg"
+                      className="w-[18px] h-[18px] flex shrink-0"
+                      alt="icon"
+                    />
+                    <p className="text-sm text-premiere-grey">
+                      {item.theaters[0].city}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
+                <p className="font-semibold text-xs leading-[18px]">4/5</p>
                 <img
-                  src="/assets/images/thumbnails/th3.png"
-                  className="w-full h-full object-cover"
-                  alt="thumbnail"
+                  src="/assets/images/icons/Star 1.svg"
+                  className="w-4 h-4 flex shrink-0"
+                  alt="star"
                 />
               </div>
-              <div className="flex flex-col gap-[6px]">
-                <h3 className="font-semibold line-clamp-2">
-                  Despicable Mines 3
-                </h3>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/video-vertical-grey.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Kids</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/location.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Jakarta</p>
-                </div>
-              </div>
             </div>
-            <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
-              <p className="font-semibold text-xs leading-[18px]">4/5</p>
-              <img
-                src="/assets/images/icons/Star 1.svg"
-                className="w-4 h-4 flex shrink-0"
-                alt="star"
-              />
-            </div>
-          </div>
-        </a>
-        <a href="details.html" className="card">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-[14px]">
-              <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                <img
-                  src="/assets/images/thumbnails/th4.png"
-                  className="w-full h-full object-cover"
-                  alt="thumbnail"
-                />
-              </div>
-              <div className="flex flex-col gap-[6px]">
-                <h3 className="font-semibold line-clamp-2">Power of Linear</h3>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/video-vertical-grey.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Horror</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/location.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Bandung</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
-              <p className="font-semibold text-xs leading-[18px]">4/5</p>
-              <img
-                src="/assets/images/icons/Star 1.svg"
-                className="w-4 h-4 flex shrink-0"
-                alt="star"
-              />
-            </div>
-          </div>
-        </a>
-        <a href="details.html" className="card">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-[14px]">
-              <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                <img
-                  src="/assets/images/thumbnails/th2.png"
-                  className="w-full h-full object-cover"
-                  alt="thumbnail"
-                />
-              </div>
-              <div className="flex flex-col gap-[6px]">
-                <h3 className="font-semibold line-clamp-2">Avengers Kids</h3>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/video-vertical-grey.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Family</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/location.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Denpasar</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
-              <p className="font-semibold text-xs leading-[18px]">4/5</p>
-              <img
-                src="/assets/images/icons/Star 1.svg"
-                className="w-4 h-4 flex shrink-0"
-                alt="star"
-              />
-            </div>
-          </div>
-        </a>
-        <a href="details.html" className="card">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-[14px]">
-              <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                <img
-                  src="/assets/images/thumbnails/th3.png"
-                  className="w-full h-full object-cover"
-                  alt="thumbnail"
-                />
-              </div>
-              <div className="flex flex-col gap-[6px]">
-                <h3 className="font-semibold line-clamp-2">
-                  Despicable Mines 3
-                </h3>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/video-vertical-grey.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Kids</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/location.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Jakarta</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
-              <p className="font-semibold text-xs leading-[18px]">4/5</p>
-              <img
-                src="/assets/images/icons/Star 1.svg"
-                className="w-4 h-4 flex shrink-0"
-                alt="star"
-              />
-            </div>
-          </div>
-        </a>
-        <a href="details.html" className="card">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-[14px]">
-              <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                <img
-                  src="/assets/images/thumbnails/th4.png"
-                  className="w-full h-full object-cover"
-                  alt="thumbnail"
-                />
-              </div>
-              <div className="flex flex-col gap-[6px]">
-                <h3 className="font-semibold line-clamp-2">Power of Linear</h3>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/video-vertical-grey.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Horror</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/images/icons/location.svg"
-                    className="w-[18px] h-[18px] flex shrink-0"
-                    alt="icon"
-                  />
-                  <p className="text-sm text-premiere-grey">Bandung</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-[2px] rounded-full p-[8px_10px] bg-[#FFFFFF1A]">
-              <p className="font-semibold text-xs leading-[18px]">4/5</p>
-              <img
-                src="/assets/images/icons/Star 1.svg"
-                className="w-4 h-4 flex shrink-0"
-                alt="star"
-              />
-            </div>
-          </div>
-        </a>
+          </Link>
+        ))}
       </section>
       <div id="Bottom-Nav" className="relative w-full h-[123px] flex shrink-0">
         <button
