@@ -1,23 +1,39 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SheetFilter from "./SheetFilter";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieByGenre } from "@/services/global/global.service";
+import type { Theater } from "@/services/theater/theater.type";
+import type { Genre } from "@/services/genre/genre.type";
+
+export type LoaderData = {
+  genres: Pick<Genre, "_id" | "name">[];
+  theaters: Theater[];
+};
 
 export default function CustomerBrowseGenre() {
   const [show, setShowFilter] = useState<boolean>(false);
 
+  const { genres, theaters } = useLoaderData() as LoaderData;
   const { genreId } = useParams();
 
   const { data, isLoading } = useQuery({
     queryKey: ["browse-movies", genreId],
     queryFn: () => getMovieByGenre(genreId ?? ""),
   });
+
+  const selectedGenre = useMemo(() => {
+    if (!genreId) {
+      return null;
+    }
+
+    return genres.find((va) => va._id === genreId);
+  }, [genres, genreId]);
 
   if (isLoading) {
     return (
@@ -38,8 +54,8 @@ export default function CustomerBrowseGenre() {
         id="Top-Nav"
         className="relative flex items-center justify-between px-5 mt-[60px]"
       >
-        <a
-          href="discover.html"
+        <Link
+          to={"/"}
           className="w-12 h-12 flex shrink-0 items-center justify-center bg-[#FFFFFF1A] backdrop-blur-md rounded-full"
         >
           <img
@@ -47,15 +63,17 @@ export default function CustomerBrowseGenre() {
             className="w-[22px] h-[22px] flex shrink-0"
             alt=""
           />
-        </a>
-        <p className="text-center mx-auto font-semibold text-sm">Asian Genre</p>
+        </Link>
+        <p className="text-center mx-auto font-semibold text-sm">
+          {selectedGenre ? selectedGenre.name : ""} Genre
+        </p>
         <div className="dummy-button w-12"></div>
       </div>
       <section className="flex items-center gap-3 flex-wrap px-5 mt-5">
         <p className="font-semibold">Filters</p>
         <a href="browse-genre.html" className="card">
           <div className="flex rounded-full p-[12px_14px] bg-[#FFFFFF1A] font-semibold text-sm hover:ring-1 hover:ring-white transition-all duration-300">
-            Asian
+            {selectedGenre?.name}
           </div>
         </a>
         <a href="browse-genre.html" className="card">

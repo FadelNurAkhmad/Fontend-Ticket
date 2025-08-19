@@ -12,10 +12,15 @@ export type TheaterValues = z.infer<typeof theaterSchema>;
 
 // ✅ Fungsi untuk mengambil semua data Theater dari endpoint "/admin/theaters"
 // Response API diasumsikan dalam bentuk BaseResponse<Theater[]>
-export const getTheaters = (): Promise<BaseResponse<Theater[]>> =>
-  privateInstance
-    .get("/admin/theaters") // kirim GET request
-    .then((res) => res.data); // ambil isi data dari response
+// export const getTheaters = (): Promise<BaseResponse<Theater[]>> =>
+//   privateInstance
+//     .get("/admin/theaters") // kirim GET request
+//     .then((res) => res.data); // ambil isi data dari response
+
+export const getTheaters = (
+  type: "admin" | "customer" = "admin"
+): Promise<BaseResponse<Theater[]>> =>
+  privateInstance.get(`/${type}/theaters`).then((res) => res.data);
 
 export const createTheater = (data: TheaterValues) =>
   privateInstance.post("/admin/theaters", data).then((res) => res.data);

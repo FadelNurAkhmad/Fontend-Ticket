@@ -37,30 +37,30 @@ const customerRoutes: RouteObject[] = [
   },
   {
     path: "/browse/:genreId",
-    // loader: async ({ params }) => {
-    //   const user = getSession();
+    loader: async ({ params }) => {
+      const user = getSession();
 
-    //   if (!user || user.role !== "customer") {
-    //     throw redirect("/sign-in");
-    //   }
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
 
-    //   if (!params.genreId) {
-    //     throw redirect("/");
-    //   }
+      if (!params.genreId) {
+        throw redirect("/");
+      }
 
-    //   const genres = await getGenres();
-    //   const theaters = await getTheaters("customer");
+      const genres = await getGenres();
+      const theaters = await getTheaters("customer");
 
-    //   console.log({
-    //     genres,
-    //     theaters,
-    //   });
+      console.log({
+        genres,
+        theaters,
+      });
 
-    //   return {
-    //     genres: genres.data,
-    //     theaters: theaters.data,
-    //   };
-    // },
+      return {
+        genres: genres.data,
+        theaters: theaters.data,
+      };
+    },
     element: <CustomerBrowseGenre />,
   },
 ];
