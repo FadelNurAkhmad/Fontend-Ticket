@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn, LOCATION_OPTIONS } from "@/lib/utils";
+import { useLoaderData } from "react-router-dom";
+import type { LoaderData } from ".";
 
 interface SheetFilterProps {
   onCancel: () => void;
@@ -8,9 +10,10 @@ interface SheetFilterProps {
 
 export default function SheetFilter({
   onCancel,
-  //   setShow,
+  setShow,
   show,
 }: SheetFilterProps) {
+  const { genres, theaters } = useLoaderData() as LoaderData;
   return (
     <div className="filter-sidebar-container relative w-full">
       <div
@@ -59,119 +62,58 @@ export default function SheetFilter({
           >
             <div className="flex flex-col gap-3">
               <p className="font-semibold text-black">Genre</p>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="genre"
-                  id=""
-                  className="w-5 h-5 rounded-full 
+              {genres.map((item) => (
+                <label key={item._id} className="flex items-center gap-[10px]">
+                  <input
+                    type="radio"
+                    value={item._id}
+                    className="w-5 h-5 rounded-full 
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
              transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Asian</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="genre"
-                  id=""
-                  className="w-5 h-5 rounded-full 
-             border-2 border-premiere-purple 
-             checked:bg-premiere-purple checked:border-premiere-purple 
-             transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Horror</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="genre"
-                  id=""
-                  className="w-5 h-5 rounded-full 
-             border-2 border-premiere-purple 
-             checked:bg-premiere-purple checked:border-premiere-purple 
-             transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Business</p>
-              </label>
+                  />
+                  <p className="font-semibold text-black">{item.name}</p>
+                </label>
+              ))}
             </div>
             <div className="flex flex-col gap-3">
               <p className="font-semibold text-black">City</p>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-full 
+              {LOCATION_OPTIONS.map((item, i) => (
+                <label
+                  key={`${item + i}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <input
+                    type="radio"
+                    value={item}
+                    className="w-5 h-5 rounded-full 
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
              transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Jakarta</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-full 
-             border-2 border-premiere-purple 
-             checked:bg-premiere-purple checked:border-premiere-purple 
-             transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Bogor</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-full 
-             border-2 border-premiere-purple 
-             checked:bg-premiere-purple checked:border-premiere-purple 
-             transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Denpasar</p>
-              </label>
+                  />
+                  <p className="font-semibold text-black">{item}</p>
+                </label>
+              ))}
             </div>
             <div className="flex flex-col gap-3">
               <p className="font-semibold text-black">Theater</p>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="checkbox"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-xl border-2 border-premiere-purple text-premiere-purple focus:ring-premiere-purple ring-premiere-purple transition-all duration-300"
-                />
-                <p className="font-semibold text-black">XXI Premiere</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="checkbox"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-xl border-2 border-premiere-purple text-premiere-purple focus:ring-premiere-purple ring-premiere-purple transition-all duration-300"
-                />
-                <p className="font-semibold text-black">CGV Cinema</p>
-              </label>
-              <label className="flex items-center gap-[10px]">
-                <input
-                  type="checkbox"
-                  name="city"
-                  id=""
-                  className="w-5 h-5 rounded-xl border-2 border-premiere-purple text-premiere-purple focus:ring-premiere-purple ring-premiere-purple transition-all duration-300"
-                />
-                <p className="font-semibold text-black">Angga Park</p>
-              </label>
+              {theaters.map((item) => (
+                <label key={item._id} className="flex items-center gap-[10px]">
+                  <input
+                    type="checkbox"
+                    value={item._id}
+                    className="w-5 h-5 rounded-xl border-2 border-premiere-purple text-premiere-purple focus:ring-premiere-purple ring-premiere-purple transition-all duration-300"
+                  />
+                  <p className="font-semibold text-black">{item.name}</p>
+                </label>
+              ))}
             </div>
             <div className="flex flex-col gap-3">
               <p className="font-semibold text-black">Availability</p>
               <label className="flex items-center gap-[10px]">
                 <input
                   type="radio"
-                  name="availability"
-                  id=""
+                  value={"1"}
                   className="w-5 h-5 rounded-full 
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
@@ -182,8 +124,7 @@ export default function SheetFilter({
               <label className="flex items-center gap-[10px]">
                 <input
                   type="radio"
-                  name="availability"
-                  id=""
+                  value={"0"}
                   className="w-5 h-5 rounded-full 
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
@@ -196,7 +137,7 @@ export default function SheetFilter({
               type="submit"
               className="w-full rounded-full p-[12px_18px] bg-[#5236FF] text-white font-bold text-center"
             >
-              Show 1893 Movies
+              Show Movies
             </button>
           </form>
         </div>
