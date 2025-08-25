@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMovieByGenre } from "@/services/global/global.service";
 import type { Theater } from "@/services/theater/theater.type";
 import type { Genre } from "@/services/genre/genre.type";
+import { useAppSelector } from "@/redux/hooks";
 
 export type LoaderData = {
   genres: Pick<Genre, "_id" | "name">[];
@@ -21,6 +22,7 @@ export default function CustomerBrowseGenre() {
 
   const { genres, theaters } = useLoaderData() as LoaderData;
   const { genreId } = useParams();
+  const filter = useAppSelector((state) => state.filter.data);
 
   const { data, isLoading } = useQuery({
     queryKey: ["browse-movies", genreId],

@@ -1,6 +1,14 @@
 import { cn, LOCATION_OPTIONS } from "@/lib/utils";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import type { LoaderData } from ".";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  filterSchema,
+  type FilterValues,
+} from "@/services/global/global.service";
+import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setFilter } from "@/redux/features/filter/filterSlice";
 
 interface SheetFilterProps {
   onCancel: () => void;
@@ -13,7 +21,47 @@ export default function SheetFilter({
   setShow,
   show,
 }: SheetFilterProps) {
+  const { genreId } = useParams();
   const { genres, theaters } = useLoaderData() as LoaderData;
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const filter = useAppSelector((state) => state.filter.data);
+
+  const { register, handleSubmit } = useForm<FilterValues>({
+    resolver: zodResolver(filterSchema),
+    defaultValues: {
+      city: filter?.city,
+      theaters: filter?.theaters ?? [],
+      availbility: "1",
+      genre: genreId,
+    },
+  });
+
+  const onSubmit = (val: FilterValues) => {
+    console.log(val);
+
+    dispatch(
+      setFilter({
+        data: {
+          // biome-ignore lint/complexity/noUselessTernary: <explanation>
+          availbility: val.availbility === "1" ? true : false,
+          city: val?.city ?? undefined,
+          // genre: val?.genre  ?? undefined,
+          theaters: val.theaters ?? undefined,
+        },
+      })
+    );
+
+    onCancel();
+
+    const body = document.getElementsByTagName("body")[0];
+    body.classList.toggle("overflow-hidden");
+
+    navigate(`/browse/${val.genre}`);
+  };
+
   return (
     <div className="filter-sidebar-container relative w-full">
       <div
@@ -57,7 +105,7 @@ export default function SheetFilter({
             <div className="dummy-button w-12"></div>
           </div>
           <form
-            action="browse-genre.html"
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-[30px] px-5 mt-[30px] mb-[110px]"
           >
             <div className="flex flex-col gap-3">
@@ -71,6 +119,7 @@ export default function SheetFilter({
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
              transition-all duration-300"
+                    {...register("genre")}
                   />
                   <p className="font-semibold text-black">{item.name}</p>
                 </label>
@@ -90,6 +139,7 @@ export default function SheetFilter({
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
              transition-all duration-300"
+                    {...register("city")}
                   />
                   <p className="font-semibold text-black">{item}</p>
                 </label>
@@ -103,6 +153,7 @@ export default function SheetFilter({
                     type="checkbox"
                     value={item._id}
                     className="w-5 h-5 rounded-xl border-2 border-premiere-purple text-premiere-purple focus:ring-premiere-purple ring-premiere-purple transition-all duration-300"
+                    {...register("theaters")}
                   />
                   <p className="font-semibold text-black">{item.name}</p>
                 </label>
@@ -118,6 +169,7 @@ export default function SheetFilter({
              border-2 border-premiere-purple 
              checked:bg-premiere-purple checked:border-premiere-purple 
              transition-all duration-300"
+                  {...register("availbility")}
                 />
                 <p className="font-semibold text-black">Available Now</p>
               </label>
