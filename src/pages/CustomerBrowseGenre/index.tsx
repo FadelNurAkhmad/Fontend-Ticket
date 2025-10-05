@@ -78,16 +78,19 @@ export default function CustomerBrowseGenre() {
             {selectedGenre?.name}
           </div>
         </a>
-        <a href="browse-genre.html" className="card">
+        {filter.city && (
           <div className="flex rounded-full p-[12px_14px] bg-[#FFFFFF1A] font-semibold text-sm hover:ring-1 hover:ring-white transition-all duration-300">
-            Jakarta
+            {filter.city}
           </div>
-        </a>
-        <a href="browse-genre.html" className="card">
-          <div className="flex rounded-full p-[12px_14px] bg-[#FFFFFF1A] font-semibold text-sm hover:ring-1 hover:ring-white transition-all duration-300">
-            XXI Premiere
+        )}
+        {filter.theaters?.map((item) => (
+          <div
+            key={item}
+            className="flex rounded-full p-[12px_14px] bg-[#FFFFFF1A] font-semibold text-sm hover:ring-1 hover:ring-white transition-all duration-300"
+          >
+            {theaters.find((va) => va._id === item)?.name}
           </div>
-        </a>
+        ))}
       </section>
       <section id="Popular" className="flex flex-col gap-4 mt-5">
         <h2 className="font-semibold px-5">Popular Movies in Asian</h2>

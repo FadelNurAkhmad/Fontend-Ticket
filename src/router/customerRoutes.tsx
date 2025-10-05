@@ -1,9 +1,14 @@
 import { getSession } from "@/lib/utils";
 import CustomerBrowseGenre from "@/pages/CustomerBrowseGenre";
 import CustomerHome from "@/pages/CustomerHome";
+import CustomerMovieDetail from "@/pages/CustomerMovieDetail";
 import CustomerSignIn from "@/pages/CustomerSignIn";
 import CustomerSignUp from "@/pages/CustomerSignUp";
-import { getGenres, getMovies } from "@/services/global/global.service";
+import {
+  getDetailMovie,
+  getGenres,
+  getMovies,
+} from "@/services/global/global.service";
 import { getTheaters } from "@/services/theater/theater.service";
 import { redirect, type RouteObject } from "react-router-dom";
 
@@ -62,6 +67,28 @@ const customerRoutes: RouteObject[] = [
       };
     },
     element: <CustomerBrowseGenre />,
+  },
+  {
+    path: "/movie/:movieId",
+    loader: async ({ params }) => {
+      const user = getSession();
+
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
+
+      if (!params.movieId) {
+        throw redirect("/");
+      }
+
+      const movieDetail = await getDetailMovie(params.movieId);
+      // return true;
+
+      return {
+        detail: movieDetail.data.movie,
+      };
+    },
+    element: <CustomerMovieDetail />,
   },
 ];
 export default customerRoutes;

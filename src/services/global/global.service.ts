@@ -1,5 +1,5 @@
 import type { BaseResponse } from "@/types/response";
-import type { Movie, MovieExplore } from "./global.type";
+import type { DataMovieDetail, Movie, MovieExplore } from "./global.type";
 import { privateInstance } from "@/lib/axios";
 import type { Genre } from "../genre/genre.type";
 import type { FilterState } from "@/redux/features/filter/filterSlice";
@@ -30,3 +30,8 @@ export const getMovieByGenre = async (
       params: params,
     })
     .then((res) => res.data);
+
+export const getDetailMovie = async (
+  movieId: string
+): Promise<BaseResponse<DataMovieDetail>> =>
+  privateInstance.get(`/customer/movies/${movieId}`).then((res) => res.data);
