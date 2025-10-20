@@ -37,3 +37,7 @@ export interface MovieDetail extends Movie {
   seats: Seat[];
   times: string[];
 }
+export interface SelectedSeat {
+  seat: string;
+  _id: string;
+}

@@ -1,5 +1,10 @@
 import type { BaseResponse } from "@/types/response";
-import type { DataMovieDetail, Movie, MovieExplore } from "./global.type";
+import type {
+  DataMovieDetail,
+  Movie,
+  MovieExplore,
+  SelectedSeat,
+} from "./global.type";
 import { privateInstance } from "@/lib/axios";
 import type { Genre } from "../genre/genre.type";
 import type { FilterState } from "@/redux/features/filter/filterSlice";
@@ -35,3 +40,15 @@ export const getDetailMovie = async (
   movieId: string
 ): Promise<BaseResponse<DataMovieDetail>> =>
   privateInstance.get(`/customer/movies/${movieId}`).then((res) => res.data);
+
+export const checkSeats = async (
+  movieId: string,
+  date: string
+): Promise<BaseResponse<SelectedSeat[]>> =>
+  privateInstance
+    .get(`/customer/check-seats/${movieId}`, {
+      params: {
+        date,
+      },
+    })
+    .then((res) => res.data);
