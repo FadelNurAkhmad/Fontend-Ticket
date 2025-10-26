@@ -41,3 +41,7 @@ export interface SelectedSeat {
   seat: string;
   _id: string;
 }
+
+export interface Balance {
+  balance: number;
+}

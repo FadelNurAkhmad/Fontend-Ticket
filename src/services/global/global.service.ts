@@ -1,5 +1,6 @@
 import type { BaseResponse } from "@/types/response";
 import type {
+  Balance,
   DataMovieDetail,
   Movie,
   MovieExplore,
@@ -16,6 +17,21 @@ export const filterSchema = z.object({
   availbility: z.string().nullable(),
   theaters: z.array(z.string()).nullable(),
 });
+
+export const transactionSchema = z
+  .object({
+    subtotal: z.number(),
+    total: z.number(),
+    bookingFee: z.number(),
+    tax: z.number(),
+    movieId: z.string(),
+    theaterId: z.string(),
+    seats: z.array(z.string()),
+    date: z.string(),
+  })
+  .strict();
+
+export type TransactionValues = z.infer<typeof transactionSchema>;
 
 export type FilterValues = z.infer<typeof filterSchema>;
 
@@ -51,4 +67,12 @@ export const checkSeats = async (
         date,
       },
     })
+    .then((res) => res.data);
+
+export const getBalance = async (): Promise<BaseResponse<Balance>> =>
+  privateInstance.get("/customer/check-balance").then((res) => res.data);
+
+export const buyTicket = async (data: TransactionValues) =>
+  privateInstance
+    .post("/customer/transaction/buy", data)
     .then((res) => res.data);
