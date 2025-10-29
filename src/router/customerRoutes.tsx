@@ -7,6 +7,7 @@ import CustomerSignUp from "@/pages/CustomerSignUp";
 import CustomerTransaction from "@/pages/CustomerTransaction";
 import CustomerTransactionSuccess from "@/pages/CustomerTransactionSuccess";
 import CustomerWallet from "@/pages/CustomerWallet";
+import CutomerWalletTopup from "@/pages/CutomerWalletTopup";
 import {
   getDetailMovie,
   getGenres,
@@ -130,6 +131,19 @@ const customerRoutes: RouteObject[] = [
       return true;
     },
     element: <CustomerWallet />,
+  },
+  {
+    path: "/wallets/topup",
+    loader: async () => {
+      const user = getSession();
+
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
+
+      return true;
+    },
+    element: <CutomerWalletTopup />,
   },
 ];
 export default customerRoutes;

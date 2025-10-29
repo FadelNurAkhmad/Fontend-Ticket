@@ -24,7 +24,7 @@ export default function CustomerWallet() {
       <div className="flex items-center justify-between px-5 mt-[60px]">
         <h1 className="font-bold text-[26px] leading-[39px]">My Wallet</h1>
         <Link
-          to="wallets/topup"
+          to="topup"
           className="rounded-full p-[12px_18px] bg-white font-bold text-black"
         >
           Top Up
