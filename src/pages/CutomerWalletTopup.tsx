@@ -1,7 +1,9 @@
 import { getSession, rupiahFormat } from "@/lib/utils";
 import { getBalance } from "@/services/global/global.service";
-import { useQuery } from "@tanstack/react-query";
+import { topupWallet } from "@/services/wallet/wallet.service";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const OPTIONS_TOPUP = [50000, 150000, 350000, 500000, 750000, 900000];
 
@@ -14,6 +16,27 @@ export default function CutomerWalletTopup() {
     queryKey: ["get-balance"],
     queryFn: () => getBalance(),
   });
+
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (data: { balance: number }) => topupWallet(data),
+  });
+
+  const handleTopup = async () => {
+    try {
+      if (balance === 0) {
+        alert("Please select topup nominal");
+
+        return;
+      }
+
+      const { data } = await mutateAsync({ balance: balance });
+
+      window.location.replace(data.redirect_url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       id="Content-Container"
@@ -24,8 +47,8 @@ export default function CutomerWalletTopup() {
           id="Top-Nav"
           className="relative flex items-center justify-between px-5 mt-[60px]"
         >
-          <a
-            href="my-wallet.html"
+          <Link
+            to="/wallets"
             className="w-12 h-12 flex shrink-0 items-center justify-center bg-[#FFFFFF1A] backdrop-blur-md rounded-full"
           >
             <img
@@ -33,7 +56,7 @@ export default function CutomerWalletTopup() {
               className="w-[22px] h-[22px] flex shrink-0"
               alt=""
             />
-          </a>
+          </Link>
           <p className="text-center mx-auto font-semibold text-sm">
             Topup Wallet
           </p>
@@ -112,7 +135,9 @@ export default function CutomerWalletTopup() {
         </div>
         <div className="relative h-[98px] w-full max-w-[640px]">
           <button
-            type="submit"
+            type="button"
+            disabled={isPending}
+            onClick={handleTopup}
             className="fixed bottom-[30px] w-[calc(100%-40px)] max-w-[600px] rounded-full p-[12px_18px] h-fit bg-white font-bold text-black"
           >
             Proceed to Topup

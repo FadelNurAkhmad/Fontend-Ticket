@@ -4,3 +4,8 @@ export interface WalletTransaction {
   price: number;
   status: string;
 }
+
+export interface WalletTopup {
+  token: string;
+  redirect_url: string;
+}
