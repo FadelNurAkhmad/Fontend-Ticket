@@ -2,11 +2,14 @@ import { getSession } from "@/lib/utils";
 import CustomerBrowseGenre from "@/pages/CustomerBrowseGenre";
 import CustomerHome from "@/pages/CustomerHome";
 import CustomerMovieDetail from "@/pages/CustomerMovieDetail";
+import CustomerOrderDetail from "@/pages/CustomerOrderDetail";
+import CustomerOrders from "@/pages/CustomerOrders";
 import CustomerSignIn from "@/pages/CustomerSignIn";
 import CustomerSignUp from "@/pages/CustomerSignUp";
 import CustomerTransaction from "@/pages/CustomerTransaction";
 import CustomerTransactionSuccess from "@/pages/CustomerTransactionSuccess";
 import CustomerWallet from "@/pages/CustomerWallet";
+import CustomerWalletTopupSuccess from "@/pages/CustomerWalletTopupSuccess";
 import CutomerWalletTopup from "@/pages/CutomerWalletTopup";
 import {
   getDetailMovie,
@@ -14,6 +17,7 @@ import {
   getMovies,
 } from "@/services/global/global.service";
 import { getTheaters } from "@/services/theater/theater.service";
+import { getOrders } from "@/services/transaction/transaction.service";
 import { redirect, type RouteObject } from "react-router-dom";
 
 const customerRoutes: RouteObject[] = [
@@ -144,6 +148,47 @@ const customerRoutes: RouteObject[] = [
       return true;
     },
     element: <CutomerWalletTopup />,
+  },
+  {
+    path: "/wallets/topup/success",
+    loader: async () => {
+      const user = getSession();
+
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
+
+      return true;
+    },
+    element: <CustomerWalletTopupSuccess />,
+  },
+  {
+    path: "/orders",
+    loader: async () => {
+      const user = getSession();
+
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
+
+      const transaction = await getOrders();
+
+      return transaction.data;
+    },
+    element: <CustomerOrders />,
+  },
+  {
+    path: "/orders/:orderId",
+    loader: async () => {
+      const user = getSession();
+
+      if (!user || user.role !== "customer") {
+        throw redirect("/sign-in");
+      }
+
+      return true;
+    },
+    element: <CustomerOrderDetail />,
   },
 ];
 export default customerRoutes;
