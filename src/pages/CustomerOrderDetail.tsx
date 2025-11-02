@@ -1,6 +1,10 @@
-import React from "react";
+import { dateFormat, rupiahFormat } from "@/lib/utils";
+import type { Transaction } from "@/services/transaction/transaction.type";
+import { Link, useLoaderData } from "react-router-dom";
 
 export default function CustomerOrderDetail() {
+  const transaction = useLoaderData() as Transaction;
+
   return (
     <div
       id="Content-Container"
@@ -11,8 +15,8 @@ export default function CustomerOrderDetail() {
           id="Top-Nav"
           className="relative flex items-center justify-between px-5 mt-[60px]"
         >
-          <a
-            href="my-tickets.html"
+          <Link
+            to="/orders"
             className="w-12 h-12 flex shrink-0 items-center justify-center bg-[#FFFFFF1A] backdrop-blur-md rounded-full"
           >
             <img
@@ -20,7 +24,7 @@ export default function CustomerOrderDetail() {
               className="w-[22px] h-[22px] flex shrink-0"
               alt=""
             />
-          </a>
+          </Link>
           <p className="text-center mx-auto font-semibold text-sm">
             Ticket Details
           </p>
@@ -30,13 +34,15 @@ export default function CustomerOrderDetail() {
           <div className="flex items-center gap-[14px]">
             <div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
               <img
-                src="/assets/images/thumbnails/th3.png"
+                src={transaction.movie.thumbnailUrl}
                 className="w-full h-full object-cover"
                 alt="thumbnail"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <h3 className="font-semibold line-clamp-2">Despicable Mines 3</h3>
+              <h3 className="font-semibold line-clamp-2">
+                {transaction.movie.title}
+              </h3>
               <div className="flex items-center gap-[6px]">
                 <div className="flex items-center gap-2">
                   <img
@@ -44,7 +50,9 @@ export default function CustomerOrderDetail() {
                     className="w-[18px] h-[18px] flex shrink-0"
                     alt="icon"
                   />
-                  <p className="text-sm text-premiere-grey">Kids</p>
+                  <p className="text-sm text-premiere-grey">
+                    {transaction.movie.genre.name}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <img
@@ -52,7 +60,9 @@ export default function CustomerOrderDetail() {
                     className="w-[18px] h-[18px] flex shrink-0"
                     alt="icon"
                   />
-                  <p className="text-sm text-premiere-grey">Jakarta</p>
+                  <p className="text-sm text-premiere-grey">
+                    {transaction.theater.city}
+                  </p>
                 </div>
               </div>
             </div>
@@ -83,9 +93,9 @@ export default function CustomerOrderDetail() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <p className="font-semibold">Angga Park Cinema</p>
+              <p className="font-semibold">{transaction.theater.name}</p>
               <p className="text-sm text-premiere-grey">
-                Jalan menuju kebahagiaan bersama no 193, Jakarta
+                {transaction.theater.city}
               </p>
             </div>
           </div>
@@ -109,7 +119,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Date & Time</p>
             </div>
-            <p>11:00, 8 Sep, 2024</p>
+            <p>{dateFormat(transaction.date, "HH:mm, DD MMM YYYY")}</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -120,7 +130,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Quantity</p>
             </div>
-            <p>2 Seats</p>
+            <p>{transaction.seats.length} Seats</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -131,7 +141,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Seats</p>
             </div>
-            <p>C1, C2</p>
+            <p>{transaction.seats.join(",")}</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -142,7 +152,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Bonus</p>
             </div>
-            <p>Included 100%</p>
+            <p>{transaction.movie.bonus}</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -153,7 +163,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Price</p>
             </div>
-            <p>Rp 189.490/orang</p>
+            <p>{rupiahFormat(transaction.movie.price)}/orang</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -164,7 +174,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Sub Total</p>
             </div>
-            <p>Rp 860.000</p>
+            <p>{rupiahFormat(transaction.subtotal)}</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -175,7 +185,7 @@ export default function CustomerOrderDetail() {
               />
               <p>PPN 11%</p>
             </div>
-            <p>Rp 24.000</p>
+            <p>{rupiahFormat(transaction.tax)}</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -186,9 +196,9 @@ export default function CustomerOrderDetail() {
               />
               <p>Booking Fee</p>
             </div>
-            <p>Rp 3.000</p>
+            <p>{rupiahFormat(transaction.bookingFee)}</p>
           </div>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
                 src="/assets/images/icons/ticket-expired.svg"
@@ -198,7 +208,7 @@ export default function CustomerOrderDetail() {
               <p>Discount</p>
             </div>
             <p>Rp 15.000</p>
-          </div>
+          </div> */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
@@ -208,7 +218,9 @@ export default function CustomerOrderDetail() {
               />
               <p>Grand Total</p>
             </div>
-            <p className="font-bold text-premiere-yellow">Rp 1.453.405</p>
+            <p className="font-bold text-amber-400">
+              {rupiahFormat(transaction.total)}
+            </p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -219,7 +231,7 @@ export default function CustomerOrderDetail() {
               />
               <p>Payment Status</p>
             </div>
-            <p className="w-fit rounded-full p-[6px_10px] bg-premiere-light-green text-premiere-green font-bold text-xs leading-[18px]">
+            <p className="w-fit rounded-full p-[6px_10px]  bg-green-200 text-green-700 font-bold text-xs leading-[18px]">
               SUCCESS
             </p>
           </div>
@@ -227,7 +239,7 @@ export default function CustomerOrderDetail() {
       </section>
       <section id="bonus" className="flex flex-col gap-4 mt-5">
         <h2 className="font-semibold px-5">Bonus Tickets</h2>
-        <div className="swiper-bonus w-full overflow-hidden">
+        <div className="swiper-bonus w-full overflow-hidden pl-6">
           <div className="swiper-wrapper">
             <div className="swiper-slide !w-fit">
               <div className="flex items-center w-[230px] rounded-[20px] p-[10px] gap-[14px] bg-white/10">
@@ -235,55 +247,11 @@ export default function CustomerOrderDetail() {
                   <img
                     src="/assets/images/thumbnails/popcorn.png"
                     className="w-full h-full object-cover"
-                    alt="image"
+                    alt="image2"
                   />
                 </div>
                 <div className="flex flex-col min-w-[120px] gap-[6px]">
-                  <h3 className="font-semibold">Popcorn Salt</h3>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/assets/images/icons/coffee.svg"
-                      className="w-[18px] h-[18px] flex shrink-0"
-                      alt="icon"
-                    />
-                    <p className="text-sm text-premiere-grey">Snacks</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="swiper-slide !w-fit">
-              <div className="flex items-center w-[230px] rounded-[20px] p-[10px] gap-[14px] bg-white/10">
-                <div className="w-20 h-20 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/milk.png"
-                    className="w-full h-full object-cover"
-                    alt="image"
-                  />
-                </div>
-                <div className="flex flex-col min-w-[120px] gap-[6px]">
-                  <h3 className="font-semibold">Susu Segar</h3>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/assets/images/icons/coffee.svg"
-                      className="w-[18px] h-[18px] flex shrink-0"
-                      alt="icon"
-                    />
-                    <p className="text-sm text-premiere-grey">Snacks</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="swiper-slide !w-fit">
-              <div className="flex items-center w-[230px] rounded-[20px] p-[10px] gap-[14px] bg-white/10">
-                <div className="w-20 h-20 rounded-2xl bg-[#D9D9D9] overflow-hidden">
-                  <img
-                    src="/assets/images/thumbnails/popcorn.png"
-                    className="w-full h-full object-cover"
-                    alt="image"
-                  />
-                </div>
-                <div className="flex flex-col min-w-[120px] gap-[6px]">
-                  <h3 className="font-semibold">Popcorn Salt</h3>
+                  <h3 className="font-semibold">{transaction.movie.bonus}</h3>
                   <div className="flex items-center gap-2">
                     <img
                       src="/assets/images/icons/coffee.svg"

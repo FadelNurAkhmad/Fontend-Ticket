@@ -17,7 +17,10 @@ import {
   getMovies,
 } from "@/services/global/global.service";
 import { getTheaters } from "@/services/theater/theater.service";
-import { getOrders } from "@/services/transaction/transaction.service";
+import {
+  getOrderDetail,
+  getOrders,
+} from "@/services/transaction/transaction.service";
 import { redirect, type RouteObject } from "react-router-dom";
 
 const customerRoutes: RouteObject[] = [
@@ -31,6 +34,7 @@ const customerRoutes: RouteObject[] = [
   },
   {
     path: "/",
+    // loader → fungsi async yang berjalan sebelum komponen halaman di-render (berguna untuk fetch data)
     loader: async () => {
       const user = getSession();
 
@@ -50,6 +54,8 @@ const customerRoutes: RouteObject[] = [
   },
   {
     path: "/browse/:genreId",
+    // params → berisi parameter dari URL
+    // Menerima objek params dari URL
     loader: async ({ params }) => {
       const user = getSession();
 
@@ -179,14 +185,23 @@ const customerRoutes: RouteObject[] = [
   },
   {
     path: "/orders/:orderId",
-    loader: async () => {
+    // params → berisi parameter dari URL
+    // Menerima objek params dari URL
+    loader: async ({ params }) => {
       const user = getSession();
 
       if (!user || user.role !== "customer") {
         throw redirect("/sign-in");
       }
 
-      return true;
+      // params.orderId -> Mengambil nilai ID dari URL
+      if (!params.orderId) {
+        throw redirect("/orders");
+      }
+
+      const transaction = await getOrderDetail(params.orderId);
+
+      return transaction.data;
     },
     element: <CustomerOrderDetail />,
   },
